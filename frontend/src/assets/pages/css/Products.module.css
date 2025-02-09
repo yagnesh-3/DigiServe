@@ -1,0 +1,25 @@
+.dp {
+    width: 60px;
+    height: 60px;
+}
+
+.product h4 {
+    margin-left: 10px;
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-evenly;
+}
