@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import mystyle from './css/home.module.css'
 import { FaBell } from "react-icons/fa"
 import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { IoSearch } from "react-icons/io5";
 const Home = ({ menu, getMenu }) => {
     useEffect(() => {
@@ -11,7 +12,22 @@ const Home = ({ menu, getMenu }) => {
     let [price, setPrice] = useState(0);
     let gst = (price * .10).toPrecision(4);
     let total = (price + parseFloat(gst)).toPrecision(4);
-    let orderId = 2342123
+
+    const [orderId, setOrderId] = useState("");
+    let data;
+    async function getOrderId() {
+        data = await fetch("http://localhost:5000/orderId")
+        data = await data.json()
+        console.log(data)
+        // setOrderId(data.id)
+        setOrderId(("ord-" + data.date + "-" + data.count))
+    }
+
+
+    useEffect(() => {
+        getOrderId();
+    }, [])
+
     function addItem(item) {
         setCart((prevCart) => {
             const existingItem = prevCart.find((ci) => ci.item._id === item._id);
@@ -121,7 +137,9 @@ const Home = ({ menu, getMenu }) => {
                                     <h2>{total}</h2>
                                 </div>
                             </div>
-
+                            <div className={mystyle.orderBtnDiv}>
+                                <button className={mystyle.orderBtn}>Place Order</button>
+                            </div>
                         </>
                     )}
                 </div>

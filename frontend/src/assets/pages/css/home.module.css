@@ -239,3 +239,19 @@
     display: flex;
     justify-content: space-between;
 }
+
+.orderBtnDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.orderBtn {
+    width: 80%;
+    height: 40px;
+    background-color: #ff6600;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 20px;
+}

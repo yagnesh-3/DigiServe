@@ -1,8 +1,10 @@
+
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
 const app = express()
 const Product = require("./models/productModel")
+const Counter = require("./models/counter.js").default;
 app.use(cors())
 app.use(express.json())
 app.listen(5000, () => {
@@ -11,6 +13,9 @@ app.listen(5000, () => {
 mongoose.connect("mongodb://127.0.0.1:27017/Digiserve").then(() => {
     console.log("Connected to MongoDB")
 })
+
+console.log("Counter Model:", Counter);
+
 
 app.post("/add-product", async (req, res) => {
     const { name, imageUrl, ingredients, price } = req.body
@@ -42,13 +47,31 @@ app.post("/add-products", async (req, res) => {
     }
 });
 
-app.delete("/delete/:id",async(req,res)=>{
-    const id=req.params.id;
-    const result=await Product.findByIdAndDelete(id);
-    if(result){
-        res.status(200).json({message:"Product deleted successfully"})
+app.delete("/delete/:id", async (req, res) => {
+    const id = req.params.id;
+    const result = await Product.findByIdAndDelete(id);
+    if (result) {
+        res.status(200).json({ message: "Product deleted successfully" })
     }
-    else{
-        res.status(400).json({message:"Failed to delete product"})
+    else {
+        res.status(400).json({ message: "Failed to delete product" })
     }
+})
+
+
+app.get("/orderId", async (req, res) => {
+    const today = new Date().toISOString().split("T")[0].replace(/-/g, "");
+
+    let counter = await Counter.findOne({ date: today });
+
+    let count = 0
+    if (!counter) {
+        // If no entry for today, create one
+        counter = new Counter({ date: today, count: 0 });
+    } else {
+        // Increment count
+        count = counter.count
+    }
+    await counter.save();
+    return res.json({ date: today, count: count + 1 });
 })
