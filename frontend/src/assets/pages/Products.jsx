@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react'
 import mystyle from './css/Products.module.css'
+import { useTables } from '../context/TableContext'
 const Products = ({ menu, getMenu }) => {
 
     useEffect(() => {
         getMenu()
     }, [])
 
-    async function handleDelete(id) {
-        const data = await fetch(`http://localhost:5000/delete/${id}`, {
-            method: 'DELETE',
-            headers: { "content-type": "application/json" },
-        })
-        getMenu()
-    }
+    const { handleDelete } = useTables();
 
     return (
         <div>

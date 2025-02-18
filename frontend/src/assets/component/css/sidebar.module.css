@@ -44,17 +44,20 @@
     width: 50px;
     color: #ddd;
     font-size: 40px;
-    padding: 20px;
-    padding-top: 30px;
+    padding-top: 10px;
 }
 
 .sidebarlink {
-
     width: 90px;
-
     display: flex;
+    flex-direction: column;
     align-items: center;
     padding: 0;
     margin: 0;
+    text-decoration: none;
+}
 
+.iconName {
+    color: #ddd;
+    padding-bottom: 10px;
 }
