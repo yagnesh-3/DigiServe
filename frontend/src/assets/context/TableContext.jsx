@@ -5,8 +5,9 @@ const TableContext = createContext();
 
 export const TableProvider = ({ children }) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+    const [tableSel, setTableSel] = useState("");
     const [tables, setTables] = useState([]);
+    const [table, setTable] = useState([]);
     const [menu, setMenu] = useState([]);
     const [cart, setCart] = useState([]);
     const [price, setPrice] = useState(0);
@@ -37,6 +38,22 @@ export const TableProvider = ({ children }) => {
         }
     };
 
+    const getTable = async (tableSel) => {
+        try {
+            const response = await fetch(`${backendUrl}/table/get-table`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ tableSel }),
+            });
+            const table = await response.json();
+            setTable(table.data); // Assuming API returns an array
+        } catch (error) {
+            console.error("Error fetching tables:", error);
+        }
+    };
+
     // ➕ Add Table
     const addTable = async (tableName) => {
         try {
@@ -52,22 +69,13 @@ export const TableProvider = ({ children }) => {
                 throw new Error("Failed to add table");
             }
 
-            await getTables(); // Refresh tables after adding
+
         } catch (error) {
             console.error("Error adding table:", error);
         }
     };
 
-    // 📦 Fetch Order ID
-    async function getOrderId() {
-        try {
-            const response = await fetch(`${backendUrl}/orderId`);
-            const data = await response.json();
-            setOrderId(`ord-${data.date}-${data.count}`);
-        } catch (error) {
-            console.error("Error fetching order ID:", error);
-        }
-    }
+
 
     // 🛒 Add Item to Cart
     function addItem2(item) {
@@ -84,7 +92,7 @@ export const TableProvider = ({ children }) => {
             }
         });
     }
-    async function addItem(item, tableSel) {
+    async function addItem(item) {
         try {
 
             await fetch(`${backendUrl}/cart/addItem`,
@@ -100,7 +108,7 @@ export const TableProvider = ({ children }) => {
 
     }
 
-    async function updateQuantity(id, tableSel, quantity) {
+    async function updateQuantity(id, quantity) {
         try {
             const data = await fetch(`${backendUrl}/cart/updateQuantity`, {
                 method: "PUT",
@@ -112,7 +120,7 @@ export const TableProvider = ({ children }) => {
                 })
             })
             const resp = await data.json();
-            console.log(resp)
+            console.log("dec", resp, "del")
             if (resp.quantity === 0) {
                 await fetch(`${backendUrl}/cart/removeItem`, {
                     method: "PUT",
@@ -132,6 +140,8 @@ export const TableProvider = ({ children }) => {
     }
 
     async function getCart(tableSel) {
+        console.log("getcartcalled")
+
         try {
             const data = await fetch(`${backendUrl}/cart/getCart`,
                 {
@@ -147,10 +157,25 @@ export const TableProvider = ({ children }) => {
             console.log(error)
         }
     }
+    // async function getCart() {
+    //     console.log("getcartcalled")
 
+    //     try {
+    //         const data = await fetch(`${backendUrl}/cart/getCart`,
+    //             {
+    //                 method: "POST",
+    //                 headers: { "content-type": "application/json" },
+    //                 body: JSON.stringify({ tableSel })
 
+    //             })
 
-    // ❌ Remove Item from Cart
+    //         const cart = await data.json()
+    //         setCart(cart)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
     function removeItem(item) {
         setPrice((prevPrice) => Math.max(0, prevPrice - item.price));
         setCart((prevCart) =>
@@ -170,15 +195,88 @@ export const TableProvider = ({ children }) => {
         getMenu()
     }
 
+    async function addNewItem(item) {
+        try {
+            const data = await fetch(`${backendUrl}/product/add-product`, {
+                method: 'POST',
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ item })
+            })
+            const resp = await data.json()
+            console.log(resp);
+            getMenu();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getMenu();
         getTables();
         getOrderId();
+
+
     }, []);
+
+
+    async function placeOrder() {
+        try {
+            const data = await fetch(`${backendUrl}/order/place-order`, {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ tableSel, orderId })
+            })
+            const responce = data.json();
+            return responce
+        } catch (error) {
+            return error
+        }
+    }
+    async function updateItem(id, item) {
+        try {
+            item.id = id
+            const data = await fetch(`${backendUrl}/product/edit`, {
+                method: 'PUT',
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ item })
+            })
+            const resp = await data.json()
+            console.log(resp);
+            getMenu();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function getOrderId() {
+        try {
+            const response = await fetch(`${backendUrl}/order/orderId`);
+            const data = await response.json();
+            setOrderId(data);
+        } catch (error) {
+            console.error("Error fetching order ID:", error);
+        }
+    }
+
+    async function getOrders() {
+        try {
+            const response = await fetch(`${backendUrl}/order/orders`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <TableContext.Provider
             value={{
+                placeOrder,
+                updateItem,
+                addNewItem,
+                backendUrl,
+                setTableSel,
+                tableSel,
                 handleDelete,
                 updateQuantity,
                 tables,
@@ -192,6 +290,10 @@ export const TableProvider = ({ children }) => {
                 addItem2,
                 removeItem,
                 orderId,
+                getOrderId,
+                table,
+                getTable,
+                getOrders
             }}
         >
             {children}

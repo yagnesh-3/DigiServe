@@ -10,7 +10,9 @@ router.get("/", (req, res) => {
 })
 
 router.post("/add-product", async (req, res) => {
-    const { name, imageUrl, ingredients, price } = req.body
+    console.log("called")
+    const { name, imageUrl, ingredients, price } = req.body.item
+    console.log("rb", name, "rb");
     const product = new Product({ name, imageUrl, ingredients, price })
     const result = await product.save()
     if (result) {
@@ -59,6 +61,29 @@ router.delete("/delete-product/:id", async (req, res) => {
     }
 });
 
+router.put("/edit", async (req, res) => {
+    try {
+        const { id, name, imageUrl, ingredients, price } = req.body.item;
+
+        if (!id) {
+            return res.status(400).json({ message: "Product ID is required" });
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            id,
+            { name, imageUrl, ingredients, price },
+            { new: true } // Returns the updated document
+        );
+
+        if (updatedProduct) {
+            res.status(200).json({ message: "Product updated successfully", updatedProduct });
+        } else {
+            res.status(404).json({ message: "Product not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update product", error: error.message });
+    }
+});
 
 
 module.exports = router

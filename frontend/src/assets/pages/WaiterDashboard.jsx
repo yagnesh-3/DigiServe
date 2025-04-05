@@ -1,11 +1,11 @@
 import React from 'react'
 import mystyle from './css/dashboard.module.css'
-const Dashboard = () => {
+const WaiterDashboard = () => {
     return (
         <div className={mystyle.mainDiv}>
-            <h1>Dashboard page</h1>
+            <h1>Waiter Dashboard page</h1>
         </div>
     )
 }
 
-export default Dashboard
+export default WaiterDashboard

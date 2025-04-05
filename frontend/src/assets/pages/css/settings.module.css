@@ -1,0 +1,83 @@
+.mainDiv {
+
+    display: flex;
+    justify-content: left;
+    align-items: top;
+}
+
+.resultsDiv {
+    flex: 50;
+    margin: 20px;
+}
+
+.SelectionDiv {
+    flex: 50;
+    width: 45%;
+    height: 90vh;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dp {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    margin-bottom: 30px;
+}
+
+.line {
+    margin-top: 20px;
+    height: 1px;
+    width: 80%;
+    border-bottom: 2px solid #ddd;
+}
+
+.nav {
+    margin-top: 20px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.NavLink {
+    font-size: 20px;
+    width: 100%;
+    text-decoration: none;
+    padding: 20px;
+    color: black;
+    border: 2px solid #ddd;
+    margin: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+}
+
+.activeNavLink {
+    font-size: 20px;
+    background-color: #ff6600;
+    color: white;
+    width: 100%;
+    text-decoration: none;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.arrow {
+    visibility: hidden;
+}
+
+.activeNavLink .arrow {
+    visibility: visible;
+}

@@ -31,6 +31,13 @@ router.get("/get-tables", async (req, res) => {
     const data = await Table.find({})
     res.status(200).json({ data })
 })
+router.post("/get-table", async (req, res) => {
+    const { tableSel } = req.body;
+    const data = await Table.findOne({ tableName: tableSel })
+
+    console.log(data, "tm")
+    res.status(200).json({ data })
+})
 
 
 

@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import { ToastContainer, toast } from "react-toastify";
 import { useTables } from '../context/TableContext'
 import mystyle from './css/order.module.css'
 const Order = () => {
+
     const [tableName, setTableName] = useState("");
     const [showForm, setShowForm] = useState(false);
     const [error, setError] = useState("");
-    const { addTable } = useTables();  // Get addTable function from context
-
+    const { addTable, getTables } = useTables();  // Get addTable function from context
     const handleAddTable = async () => {
         if (tableName.trim() === '') {
-            setError("Please enter Table Number");
+            toast.warning("Please enter Table Number");
             return;
         }
-        
+
         await addTable(tableName);  // Add new table via context
         setShowForm(false);  // Close the form
+        toast.success("Table added Sucessfully!");
         setTableName("");  // Reset input
         setError("");  // Clear error message
+        await getTables();
     };
 
 

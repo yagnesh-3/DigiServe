@@ -1,25 +1,187 @@
-.dp {
-    width: 60px;
-    height: 60px;
+/* General Button Styles */
+button {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.3s ease-in-out;
 }
 
-.product h4 {
-    margin-left: 10px;
+/* Orange Button (Edit, Add New, etc.) */
+.edit,
+.newTableBtn,
+.addBtn {
+    background: #ff6600;
+    color: white;
 }
 
-.product {
+.edit:hover,
+.newTableBtn:hover,
+.addBtn:hover {
+    background: #e65c00;
+}
+
+/* Red Button (Delete, Cancel) */
+.delete,
+.cancelBtn {
+    background: #ff4d4d;
+    color: white;
+}
+
+.delete:hover,
+.cancelBtn:hover {
+    background: #d63031;
+}
+
+/* Green Button (Submit) */
+.submitBtn {
+    background: #28a745;
+    color: white;
+}
+
+.submitBtn:hover {
+    background: #218838;
+}
+
+/* Menu Container */
+.menuContainer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: left;
+    overflow-y: auto;
+    max-height: 80vh;
+    padding: 10px;
+}
+
+/* Menu Items */
+.menuItem {
+    width: 250px;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    height: 38vh;
+    background-color: white;
+}
+
+.menuItem img {
+    width: 250px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+/* Header Section */
+.head {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Price Styling */
+.price {
+    color: #ff6600;
+}
+
+/* Ingredients Section */
+.ingredients {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    height: 8vh;
+}
+
+.ingredients p {
+    padding: 0;
+    margin: 0;
+    color: #6a6868;
+}
+
+/* Button Container */
+.btnDiv {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Main Heading */
+.heading {
     padding: 20px;
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
+/* Main Bar */
+.mainBar {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.actions {
+.scrollable {
+    height: 100vh;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* Overlay Background */
+.formContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: space-evenly;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Form Box */
+.form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Form Inputs */
+.form input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Form Buttons */
+.formButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.formButtons button {
+    width: 48%;
 }

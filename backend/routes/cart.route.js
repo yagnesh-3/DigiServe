@@ -16,6 +16,16 @@ router.put("/updateQuantity", async (req, res) => {
     console.log(table)
     const cart = table.cart.find(cartItem => cartItem.product.toString() === id)
     cart.quantity += quantity;
+
+    let newTotal = 0;
+    for (const cartItem of table.cart) {
+        const product = await Product.findById(cartItem.product._id);
+        if (product) {
+            newTotal += product.price * cartItem.quantity;
+        }
+    }
+    table.cartTotal = newTotal;
+
     await table.save()
     res.send(cart)
 })
@@ -24,6 +34,14 @@ router.put("/removeItem", async (req, res) => {
     const { tableSel, id } = req.body;
     const table = await Table.findOne({ "tableName": tableSel });
     table.cart = table.cart.filter(cartItem => cartItem.product.toString() !== id);
+    let newTotal = 0;
+    for (const cartItem of table.cart) {
+        const product = await Product.findById(cartItem.product._id);
+        if (product) {
+            newTotal += product.price * cartItem.quantity;
+        }
+    }
+    table.cartTotal = newTotal;
     await table.save();
     res.send(table.cart)
 })
@@ -45,6 +63,14 @@ router.put("/addItem", async (req, res) => {
         } else {
             table.cart.push({ product: item._id });
         }
+        let newTotal = 0;
+        for (const cartItem of table.cart) {
+            const product = await Product.findById(cartItem.product._id);
+            if (product) {
+                newTotal += product.price * cartItem.quantity;
+            }
+        }
+        table.cartTotal = newTotal;
         await table.save();
         console.log("done")
         return res.status(201).json({ message: "item added Sucessfully" })

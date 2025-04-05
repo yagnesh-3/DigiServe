@@ -8,11 +8,12 @@ import { useTables } from '../context/TableContext'; // ✅ Use the custom hook
 const Home = () => {
 
     const navigate = useNavigate();
-    const { menu, cart, addItem2, removeItem, orderId } = useTables(); // ✅ Use useTables()
+    const { menu, addItem2, removeItem, orderId } = useTables(); // ✅ Use useTables()
+    const cart = [{ price: 1, imageUrl: "https://cdn.uengage.io/uploads/5/image-342266-1715596630.png", quantity: 2 }]
     const [price, setPrice] = useState(0);
-    cart.map((item) => {
-        setPrice(item.item.price * item.quantity)
-    })
+    // cart.map((item) => {
+    //     setPrice(item.price * item.quantity)
+    // })
     let gst = price * .10;
     let total = gst + price;
     console.log(cart)
@@ -63,16 +64,16 @@ const Home = () => {
                     <>
                         <h1>OrderID: {orderId}</h1>
                         <div className={mystyle.cartContainer}>
-                            {cart.map(({ item, quantity }) => (
+                            {cart.map((item) => (
                                 <div key={item._id} className={mystyle.cartItem}>
                                     <img src={item.imageUrl} alt={item.name} />
                                     <div className={mystyle.cartHead}>
                                         <p>{item.name}</p>
-                                        <p className={mystyle.price}>₹ {item.price * quantity}</p>
+                                        <p className={mystyle.price}>₹ {item.price * item.quantity}</p>
                                     </div>
                                     <div className={mystyle.btnDiv}>
                                         <button onClick={() => removeItem(item)} className={mystyle.qbtn1}>-</button>
-                                        <p>{quantity}</p>
+                                        <p>{item.quantity}</p>
                                         <button onClick={() => addItem2(item)} className={mystyle.qbtn2}>+</button>
                                     </div>
                                 </div>
