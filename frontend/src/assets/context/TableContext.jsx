@@ -19,7 +19,13 @@ export const TableProvider = ({ children }) => {
     // 🛒 Fetch Menu
     async function getMenu() {
         try {
-            const response = await fetch(`${backendUrl}/product/get-products`);
+            const response = await fetch(`${backendUrl}/product/get-products`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
             const data = await response.json();
             setMenu(data);
         } catch (error) {
@@ -30,7 +36,13 @@ export const TableProvider = ({ children }) => {
     // 🏷️ Fetch Tables
     const getTables = async () => {
         try {
-            const response = await fetch(`${backendUrl}/table/get-tables`);
+            const response = await fetch(`${backendUrl}/table/get-tables`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
             const tables = await response.json();
             setTables(tables.data); // Assuming API returns an array
         } catch (error) {
@@ -44,8 +56,12 @@ export const TableProvider = ({ children }) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
-                body: JSON.stringify({ tableSel }),
+                body: JSON.stringify({
+                    tableSel,
+                }),
+
             });
             const table = await response.json();
             setTable(table.data); // Assuming API returns an array
@@ -61,6 +77,8 @@ export const TableProvider = ({ children }) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+
                 },
                 body: JSON.stringify({ tableName }),
             });
@@ -98,7 +116,10 @@ export const TableProvider = ({ children }) => {
             await fetch(`${backendUrl}/cart/addItem`,
                 {
                     method: "PUT",
-                    headers: { "content-type": "application/json" },
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     body: JSON.stringify({ item, tableSel })
                 })
             getCart(tableSel)
@@ -112,11 +133,15 @@ export const TableProvider = ({ children }) => {
         try {
             const data = await fetch(`${backendUrl}/cart/updateQuantity`, {
                 method: "PUT",
-                headers: { "content-type": "application/json" },
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
                 body: JSON.stringify({
                     id,
                     quantity,
-                    tableSel
+                    tableSel,
+
                 })
             })
             const resp = await data.json();
@@ -124,10 +149,14 @@ export const TableProvider = ({ children }) => {
             if (resp.quantity === 0) {
                 await fetch(`${backendUrl}/cart/removeItem`, {
                     method: "PUT",
-                    headers: { "content-type": "application/json" },
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     body: JSON.stringify({
                         id,
-                        tableSel
+                        tableSel,
+
                     })
                 })
             }
@@ -146,7 +175,10 @@ export const TableProvider = ({ children }) => {
             const data = await fetch(`${backendUrl}/cart/getCart`,
                 {
                     method: "POST",
-                    headers: { "content-type": "application/json" },
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     body: JSON.stringify({ tableSel })
 
                 })
@@ -190,7 +222,11 @@ export const TableProvider = ({ children }) => {
     async function handleDelete(id) {
         const data = await fetch(`${backendUrl}/product/delete-product/${id}`, {
             method: 'DELETE',
-            headers: { "content-type": "application/json" },
+            headers: {
+                "content-type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+
         })
         getMenu()
     }
@@ -199,7 +235,10 @@ export const TableProvider = ({ children }) => {
         try {
             const data = await fetch(`${backendUrl}/product/add-product`, {
                 method: 'POST',
-                headers: { "content-type": "application/json" },
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
                 body: JSON.stringify({ item })
             })
             const resp = await data.json()
@@ -223,7 +262,10 @@ export const TableProvider = ({ children }) => {
         try {
             const data = await fetch(`${backendUrl}/order/place-order`, {
                 method: "POST",
-                headers: { "content-type": "application/json" },
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
                 body: JSON.stringify({ tableSel, orderId })
             })
             const responce = data.json();
@@ -237,7 +279,10 @@ export const TableProvider = ({ children }) => {
             item.id = id
             const data = await fetch(`${backendUrl}/product/edit`, {
                 method: 'PUT',
-                headers: { "content-type": "application/json" },
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
                 body: JSON.stringify({ item })
             })
             const resp = await data.json()
@@ -250,7 +295,14 @@ export const TableProvider = ({ children }) => {
 
     async function getOrderId() {
         try {
-            const response = await fetch(`${backendUrl}/order/orderId`);
+            const response = await fetch(`${backendUrl}/order/orderId`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+
+            });
             const data = await response.json();
             setOrderId(data);
         } catch (error) {
@@ -260,7 +312,14 @@ export const TableProvider = ({ children }) => {
 
     async function getOrders() {
         try {
-            const response = await fetch(`${backendUrl}/order/orders`);
+            const response = await fetch(`${backendUrl}/order/orders`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+
+            });
             const data = await response.json();
             return data;
         } catch (error) {
@@ -268,9 +327,29 @@ export const TableProvider = ({ children }) => {
         }
     }
 
+    async function handlePayment(id) {
+        try {
+            const request = await fetch(`${backendUrl}/order/handlePayment`, {
+                method: 'POST',
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify({ id })
+            })
+            const response = await request.json()
+            return response
+        } catch (error) {
+            console.log("error")
+            return { error }
+        }
+    }
+
+
     return (
         <TableContext.Provider
             value={{
+                handlePayment,
                 placeOrder,
                 updateItem,
                 addNewItem,

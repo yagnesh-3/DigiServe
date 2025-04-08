@@ -18,11 +18,15 @@ const Loginmain = () => {
         }
 
         try {
+            const start = performance.now();
             const res = await fetch(`${backendUrl}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
+            const end = performance.now(); // End timer
+            const responseTime = end - start;
+            console.log(`Backend response time: ${responseTime.toFixed(2)} ms`);
             const data = await res.json();
             console.log(data)
             if (!data.status) {

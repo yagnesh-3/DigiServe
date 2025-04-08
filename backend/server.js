@@ -8,6 +8,7 @@ const Product = require("./models/productModel")
 const cookieParse = require("cookie-parser")
 const Table = require("./models/tableModel.js")
 const authRouter = require("./routes/auth.route.js")
+const auth = require("./middlewares/auth.js");
 const Cartrouter = require("./routes/cart.route.js")
 const tableRouter = require("./routes/table.route.js")
 const productRouter = require("./routes/products.route.js")
@@ -26,6 +27,7 @@ const io = new Server(server, {
 });
 app.set("socketio", io);
 app.use("/auth", authRouter)
+app.use(auth);
 app.use("/cart", Cartrouter)
 app.use("/table", tableRouter)
 app.use("/product", productRouter)

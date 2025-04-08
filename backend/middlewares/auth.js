@@ -2,9 +2,16 @@ const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
     try {
-        const token = req.body.token   // Support both body and Bearer token
+        // Try to get token from Authorization header (preferred)
+        let token = null;
+        const authHeader = req.headers.authorization;
 
-        // console.log("Received Token:", token);
+        if (authHeader && authHeader.startsWith("Bearer ")) {
+            token = authHeader.split(" ")[1];
+        } else if (req.body.token) {
+            // Fallback: get from request body
+            token = req.body.token;
+        }
 
         if (!token) {
             return res.status(401).json({ status: false, message: "Auth Failed: No token provided" });
@@ -12,7 +19,7 @@ const auth = (req, res, next) => {
 
         const decoded = jwt.verify(token, "secret");
         req.user = decoded;
-        next(); // Proceed to next middleware
+        next();
 
     } catch (error) {
         console.error("JWT Verification Error:", error.message);

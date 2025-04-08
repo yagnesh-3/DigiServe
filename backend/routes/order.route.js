@@ -87,12 +87,24 @@ router.post("/place-order", async (req, res) => {
 
 router.get("/orders", async (req, res) => {
     try {
-        const orders = await Order.find().populate("items.product").populate("table")
+        const orders = await Order.find()
+            .populate("items.product")
+            .populate("table");
+
+        // Define custom status order
+        const statusOrder = ["served", "pending", "preparing", "ready", "paid"];
+
+        // Sort the orders in JS based on status
+        orders.sort((a, b) => {
+            return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+        });
+
         res.json(orders);
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
 
 
 
@@ -110,6 +122,24 @@ router.get("/orderId", async (req, res) => {
             count = order.count += 1;
         }
         res.json(`${date}-${count}`);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+router.post("/handlePayment", async (req, res) => {
+    try {
+        const id = req.body.id;
+        const order = await Order.findById(id).populate('table');
+
+        if (order && order.table) {
+            order.table.isOccupied = false;
+            await order.table.save(); // Save the updated table
+        }
+        order.status = "paid"
+        await order.save();
+        res.status(200).json({ status: true, message: "payment sucessful" })
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
