@@ -8,7 +8,7 @@ const OrderItemSchema = new mongoose.Schema({
 const OrderSchema = new mongoose.Schema({
     orderId: { type: String, required: true },
     table: { type: mongoose.Schema.Types.ObjectId, ref: "Table" },
-    //waiter: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    waiter: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     items: [OrderItemSchema], // Use the sub-schema
     status: {
         type: String,

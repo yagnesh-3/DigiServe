@@ -69,7 +69,6 @@ const PlaceDineInOrder = () => {
         const resp = await placeOrder();
         console.log(resp)
         setIsConformed(resp.status)
-
     }
 
     const handleClose = () => {

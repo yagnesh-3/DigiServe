@@ -43,7 +43,8 @@ async function getTableId(tableSel) {
 
 router.post("/place-order", async (req, res) => {
     try {
-        const { tableSel, orderId } = req.body;
+        const { tableSel, orderId, } = req.body;
+        const user = req.user;
         const table = await Table.findOne({ tableName: tableSel }).populate("cart.product");
         if (!table) {
             return res.status(404).json({ error: "Table not found" });
@@ -58,6 +59,7 @@ router.post("/place-order", async (req, res) => {
         const order = new Order({
             orderId,
             table: tableId,
+            waiter: user.id,
             items: table.cart,
             totalPrice: total
         })
@@ -72,11 +74,8 @@ router.post("/place-order", async (req, res) => {
         console.log("ca", resp, "ce")
 
         const io = req.app.get("socketio");
-        io.emit("67ceebb3ef3cdec80b2be3ae", {
-            orderId: resp._id,
-            tableName: tableSel,
-            items: resp.items,
-            totalPrice: resp.totalPrice
+        io.to("admin").emit("orderPlaced", {
+            resp
         });
 
         res.json({ status: true, id: resp._id });
@@ -87,7 +86,8 @@ router.post("/place-order", async (req, res) => {
 
 router.get("/orders", async (req, res) => {
     try {
-        const orders = await Order.find()
+        const user = req.user;
+        const orders = await Order.find({ waiter: user.id })
             .populate("items.product")
             .populate("table");
 

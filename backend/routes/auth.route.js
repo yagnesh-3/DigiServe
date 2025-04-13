@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
     if (!passwordCheck) {
         return res.status(401).json({ status: false, message: "Invalid password" })
     }
-    const token = jwt.sign({ email: user.email }, "secret", { expiresIn: "4h" })
+    const token = jwt.sign({ email: user.email, id: user._id }, "secret", { expiresIn: "4h" })
     res.cookie("token", token);
 
     return res.status(200).json({ status: true, message: "Login Sucess", "token": token, user })

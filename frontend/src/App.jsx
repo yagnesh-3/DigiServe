@@ -14,6 +14,7 @@ import DineIn from './assets/pages/DineIn'
 import TakeAway from './assets/pages/TakeAway'
 import Order from './assets/pages/Order'
 import { TableProvider } from './assets/context/TableContext.jsx'
+import { DashboardProvider } from './assets/context/DashboardContext.jsx';
 import Settings from './assets/pages/Settings.jsx'
 import PersonalInfo from './assets/pages/PersonalInfo.jsx'
 import Orders from './assets/pages/Orders.jsx'
@@ -42,46 +43,48 @@ function App() {
 
   return (
     < >
-      <TableProvider>
-        {location.pathname !== "/login" && <Sidebar />}
-        <div className='contentDiv'>
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-            transition={Bounce}
-          />
+      <DashboardProvider>
+        <TableProvider>
+          {location.pathname !== "/login" && <Sidebar />}
+          <div className='contentDiv'>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition={Bounce}
+            />
 
-          <Routes>
-            <Route path="/login" element={<Loginmain />} />
-            <Route path='/placeOrder' element={<PlaceOrder />} />
-            <Route path='/order' element={<Order />}>
-              <Route path='DineIn' element={<DineIn />} />
-              <Route path='TakeAway' element={<TakeAway />} />
-            </Route>
-            <Route path='/order/place-order' element={<PlaceDineInOrder />} />
-            <Route path='/orders' element={<Orders />} />
+            <Routes>
+              <Route path="/login" element={<Loginmain />} />
+              <Route path='/placeOrder' element={<PlaceOrder />} />
+              <Route path='/order' element={<Order />}>
+                <Route path='DineIn' element={<DineIn />} />
+                <Route path='TakeAway' element={<TakeAway />} />
+              </Route>
+              <Route path='/order/place-order' element={<PlaceDineInOrder />} />
+              <Route path='/orders' element={<Orders />} />
 
-            <Route path='/settings' element={<Settings />} >
-              <Route path='personalInfo' element={<PersonalInfo />} />
-              <Route path='employeeManagment' element={<PersonalInfo />} />
-              <Route path='openingHours' element={<PersonalInfo />} />
-              <Route path='loginAndPass' element={<PersonalInfo />} />
-            </Route>
-            <Route path='/' element={dashboardRoutes[userRole]} />
-            <Route path='/products' element={<Products menu={menu} getMenu={getMenu} />} />
-            <Route path='/notifications' element={<Notifications />} />
+              <Route path='/settings' element={<Settings />} >
+                <Route path='personalInfo' element={<PersonalInfo />} />
+                <Route path='employeeManagment' element={<PersonalInfo />} />
+                <Route path='openingHours' element={<PersonalInfo />} />
+                <Route path='loginAndPass' element={<PersonalInfo />} />
+              </Route>
+              <Route path='/' element={<AdminDashBoard />} />
+              <Route path='/products' element={<Products menu={menu} getMenu={getMenu} />} />
+              <Route path='/notifications' element={<Notifications />} />
 
-          </Routes>
-        </div>
-      </TableProvider>
+            </Routes>
+          </div>
+        </TableProvider>
+      </DashboardProvider>
     </>
   )
 }

@@ -1,3 +1,151 @@
-.mainDiv {
-    height: 200vh;
+.heading {
+    margin: 0;
+    padding: 1.5rem;
+    border-bottom: 2px solid #ddd;
+}
+
+.dashboard_cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    border: 2px solid #ddd;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    background-color: #ff6600;
+    color: #fff;
+
+}
+
+.icon {
+    font-size: 36px;
+}
+
+/* Text styling */
+.card-text p {
+    margin: 0;
+    color: #888;
+    font-size: 14px;
+}
+
+.card-text h2 {
+    margin: 4px 0 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Color classes */
+.blue {
+    color: #3b82f6;
+}
+
+.green {
+    color: #22c55e;
+}
+
+.orange {
+    color: #f97316;
+}
+
+.red {
+    color: #ef4444;
+}
+
+/* active orders */
+.orders_container {
+    border: 2px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.orders_container h2 {
+    margin-bottom: 15px;
+}
+
+.orders_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders_table th,
+.orders_table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.status_badge {
+
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    display: inline-block;
+}
+
+.status_badge.pending {
+    background-color: #f87171;
+    /* red */
+    color: #fff;
+}
+
+.status_badge.preparing {
+    background-color: #facc15;
+    /* yellow */
+    color: #333;
+}
+
+.status_badge.ready {
+    background-color: #38bdf8;
+    /* blue */
+    color: #fff;
+}
+
+.status_badge.served {
+    background-color: #22c55e;
+    /* green */
+    color: #fff;
+}
+
+.status_badge.paid {
+    background-color: #8b5cf6;
+    /* purple */
+    color: #fff;
+}
+
+
+.serve_btn,
+.view_btn {
+    padding: 6px 10px;
+    margin-right: 5px;
+    font-size: 13px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.serve_btn {
+    background-color: #22c55e;
+    color: white;
+}
+
+.view_btn {
+    background-color: #3b82f6;
+    color: white;
 }
